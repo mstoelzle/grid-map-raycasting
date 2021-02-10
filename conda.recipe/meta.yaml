@@ -14,6 +14,7 @@ requirements:
     - "{{ compiler('cxx') }}"
     - cmake
     - ninja
+    - eigen
 
   host:
     - python
@@ -32,5 +33,5 @@ test:
     - python tests/test.py
 
 about:
-  summary: A CMake example project built with pybind11.
+  summary: C++ component including Python bindings to raycast a gridmap from a viewpoint to check for occlusions
   license_file: LICENSE

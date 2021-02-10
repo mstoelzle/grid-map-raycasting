@@ -44,7 +44,7 @@ class CMakeBuild(build_ext):
         cmake_args = [
             "-DCMAKE_LIBRARY_OUTPUT_DIRECTORY={}".format(extdir),
             "-DPYTHON_EXECUTABLE={}".format(sys.executable),
-            "-DEXAMPLE_VERSION_INFO={}".format(self.distribution.get_version()),
+            "-DGRID_MAP_RAYCASTING_VERSION_INFO={}".format(self.distribution.get_version()),
             "-DCMAKE_BUILD_TYPE={}".format(cfg),  # not used on MSVC, but no harm
         ]
         build_args = []
@@ -106,9 +106,12 @@ setup(
     version="0.0.1",
     author="Maximilian Stölzle",
     author_email="maximilian@stoelzle.ch",
-    description="A test project using pybind11 and CMake",
+    description="C++ component including Python bindings to raycast a gridmap from a viewpoint to check for occlusions",
     long_description="",
     ext_modules=[CMakeExtension("grid_map_raycasting")],
     cmdclass={"build_ext": CMakeBuild},
     zip_safe=False,
+    install_requires=[
+        'numpy',
+    ],
 )
