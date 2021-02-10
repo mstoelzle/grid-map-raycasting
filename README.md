@@ -46,19 +46,19 @@ invoke CMake and build the pybind11 module as specified in `CMakeLists.txt`.
 ## Usage
 Please refer to the following sample code:
 ```python
-from grid_map_raycasting import raycast_grid_map
+from grid_map_raycasting import setRaisimLicenseKey, rayCastGridMap
 import numpy as np
 
 # Vantage point (e.g. robot position) is at x=0, y=0, z=1
 vantage_point = np.array([0., 0., 1.], dtype=np.double)
 # We define a flat Digital Elevation Map (DEM) at the ground-level
-dem = np.zeros((64, 64), dtype=np.double)
+grid_map = np.zeros((64, 64), dtype=np.double)
 # We define the resolution of the grid of the DEM in x and y direction
 grid_resolution = np.array([0.1, 0.1], dtype=np.double)
 
 # We raycast the DEM from the vantage point and check for every grid cell 
 # weather it is visible from the vantage point
-occlusion_mask = raycast_grid_map(vantage_point, dem, grid_resolution)
+occlusion_mask = rayCastGridMap(vantage_point, grid_map, grid_resolution)
 ```
 
 ## Special notes for Windows
