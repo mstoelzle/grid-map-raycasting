@@ -11,11 +11,16 @@
 namespace py = pybind11;
 
 namespace grid_map_raycasting {
-    Eigen::MatrixXd raycast_grid_map(Eigen::Vector3d vantage_point, Eigen::MatrixXd dem){
+    Eigen::MatrixXd raycast_grid_map(Eigen::Vector3d vantage_point, Eigen::MatrixXd dem, Eigen::Vector2d grid_resolution){
         const std::vector<double> height_vec(dem.data(), dem.data() + dem.rows() * dem.cols());
 
+        double xSize = dem.rows() * grid_resolution[0];
+        double ySize = dem.cols() * grid_resolution[1];
+        double centerX = 0;
+        double centerY = 0;
+
         raisim::World world;
-        world.addHeightMap(dem.rows(), dem.cols(), 10., 10., 0, 0, height_vec);
+        world.addHeightMap(dem.rows(), dem.cols(), xSize, ySize, centerX, centerY, height_vec);
 
         for (int i = 0; i < dem.rows(); i++) {
             for (int j = 0; j < dem.cols(); j++) {
@@ -55,7 +60,7 @@ PYBIND11_MODULE(grid_map_raycasting, m) {
 
         It returns a grid map of booleans which signify weather the grid cell is visible from the vantage point of the robot or if its hidden by the terrain.
         Formulated alternatively, it creates an occlusion mask for a given Digital Elevation Map (DEM) which stores true for occluded and false for visible.
-    )pbdoc", py::arg("vantage_point"), py::arg("dem"));
+    )pbdoc", py::arg("vantage_point"), py::arg("dem"), py::arg("grid_resolution"));
 
 
 #ifdef VERSION_INFO

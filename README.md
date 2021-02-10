@@ -53,10 +53,12 @@ import numpy as np
 vantage_point = np.array([0., 0., 1.], dtype=np.double)
 # We define a flat Digital Elevation Map (DEM) at the ground-level
 dem = np.zeros((64, 64), dtype=np.double)
+# We define the resolution of the grid of the DEM in x and y direction
+grid_resolution = np.array([0.1, 0.1], dtype=np.double)
 
 # We raycast the DEM from the vantage point and check for every grid cell 
 # weather it is visible from the vantage point
-occlusion_mask = raycast_grid_map(vantage_point, dem)
+occlusion_mask = raycast_grid_map(vantage_point, dem, grid_resolution)
 ```
 
 ## Special notes for Windows
