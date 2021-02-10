@@ -50,9 +50,9 @@ from grid_map_raycasting import raycast_grid_map
 import numpy as np
 
 # Vantage point (e.g. robot position) is at x=0, y=0, z=1
-vantage_point = np.array([0., 0., 1.], dtype=np.float64)
+vantage_point = np.array([0., 0., 1.], dtype=np.double)
 # We define a flat Digital Elevation Map (DEM) at the ground-level
-dem = np.zeros((64, 64), dtype=np.float64)
+dem = np.zeros((64, 64), dtype=np.double)
 
 # We raycast the DEM from the vantage point and check for every grid cell 
 # weather it is visible from the vantage point
