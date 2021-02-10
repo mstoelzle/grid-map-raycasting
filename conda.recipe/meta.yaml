@@ -1,5 +1,5 @@
 package:
-  name: cmake_example
+  name: grid_map_raycasting
   version: 0.0.1
 
 source:
@@ -25,7 +25,7 @@ requirements:
 
 test:
   imports:
-    - cmake_example
+    - grid_map_raycasting
   source_files:
     - tests
   commands:
