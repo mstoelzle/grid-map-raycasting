@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import grid_map_raycasting as m
 import faulthandler; faulthandler.enable()
+from matplotlib import pyplot as plt
 import numpy as np
 from pathlib import Path
 import os
@@ -17,15 +18,23 @@ m.setRaisimLicenseFile(str(raisim_install_path / "rsc" / "activation.raisim"))
 vantage_point = np.array([0., 0., 1.], dtype=np.double)
 # We define a flat Digital Elevation Map (DEM) at the ground-level
 grid_map = np.zeros((64, 64), dtype=np.double)
-# grid_map[0:30, 0:30] = 3
+grid_map[0:20, 0:20] = 3
 # We define the resolution of the grid of the DEM in x and y direction
 grid_resolution = np.array([1, 1], dtype=np.double)
 
-# The occlusion mask we expect to receive as the output of the ray-casting
-occlusion_mask = np.full((64, 64), False)
+# we perform ray-casting to receive the occlusion mask
+occlusion_mask = m.rayCastGridMap(vantage_point, grid_map, grid_resolution)
 
-print(m.rayCastGridMap(vantage_point, grid_map, grid_resolution))
-exit()
+# The occlusion mask we expect to receive as the output of the ray-casting
+target_occlusion_mask = np.full((64, 64), False)
+target_occlusion_mask[0:19, 0:19] = True
+
+fig, axes = plt.subplots(nrows=1, ncols=2)
+axes[0].set_title("Grid map")
+axes[0].matshow(np.swapaxes(grid_map, 0, 1))
+axes[1].set_title("Occlusion mask")
+axes[1].matshow(np.swapaxes(occlusion_mask, 0, 1))
+plt.show()
 
 assert m.__version__ == "0.0.1"
-assert (m.rayCastGridMap(vantage_point, grid_map, grid_resolution) == occlusion_mask).all()
+assert (occlusion_mask == target_occlusion_mask).all()
