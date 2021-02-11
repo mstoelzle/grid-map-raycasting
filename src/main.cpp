@@ -40,7 +40,7 @@ namespace grid_map_raycasting {
                 double ray_length = direction.norm();
                 direction /= ray_length;
 
-                auto& col = world.rayTest(vantage_point, direction, 0.99*ray_length, true);
+                auto& col = world.rayTest(vantage_point, direction, 0.9999*ray_length, true);
                 if(col.size() > 0) {
                     occlusion_mask(i, j) = true;
                 }
