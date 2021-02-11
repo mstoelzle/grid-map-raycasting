@@ -1,4 +1,5 @@
-build/
+build/*
+cmake-build-*/*
 dist/
 _build/
 _generate/
@@ -6,4 +7,4 @@ _generate/
 *.py[cod]
 *.egg-info
 *env*
-.idea
+.idea/*
