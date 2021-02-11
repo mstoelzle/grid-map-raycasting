@@ -47,7 +47,6 @@ namespace grid_map_raycasting {
             }
         }
 
-        // Eigen::MatrixXf occlusion_mask = grid_map;
         return occlusion_mask;
     }
 }
