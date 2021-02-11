@@ -31,9 +31,9 @@ target_occlusion_mask[0:19, 0:19] = True
 
 fig, axes = plt.subplots(nrows=1, ncols=2)
 axes[0].set_title("Grid map")
-axes[0].matshow(np.swapaxes(grid_map, 0, 1))
+axes[0].matshow(grid_map)
 axes[1].set_title("Occlusion mask")
-axes[1].matshow(np.swapaxes(occlusion_mask, 0, 1))
+axes[1].matshow(occlusion_mask)
 plt.show()
 
 assert m.__version__ == "0.0.1"
