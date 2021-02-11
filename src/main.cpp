@@ -52,17 +52,6 @@ namespace grid_map_raycasting {
     }
 }
 
-/*self.dem = dem
-self.res_grid = res_grid
-self.max_ray_cast_dist = (np.max(res_grid) * np.max(dem.shape)).item()
-
-center_x, center_y = 0., 0.
-height_vec = dem.copy().reshape((-1, ), order="F")
-
-self.world = self.raisim.World()
-self.world.addHeightMap(dem.shape[0], dem.shape[1], dem.shape[0]*res_grid[0], dem.shape[1]*res_grid[1],
-                        center_x, center_y, height_vec)*/
-
 PYBIND11_MODULE(grid_map_raycasting, m) {
     m.doc() = R"pbdoc(
         C++ component including Python bindings to raycast a gridmap from a viewpoint to check for occlusions
