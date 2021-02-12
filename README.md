@@ -4,9 +4,6 @@ C++ component including Python bindings to raycast a gridmap from a viewpoint to
 
 ## Prerequisites
 
-This package relies on [RaiSim](https://raisim.com) to perform a [rayTest](https://raisim.com/sections/RayTest.html).
-Please acquire the suitable license.
-
 **On Unix (Linux, OS X)**
 
 * A compiler with C++11 support
