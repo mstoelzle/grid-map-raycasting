@@ -3,7 +3,6 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/eigen.h>
 #include <pybind11/stl.h>
-#include <raisim/World.hpp>
 
 #define STRINGIFY(x) #x
 #define MACRO_STRINGIFY(x) STRINGIFY(x)
@@ -16,16 +15,6 @@ namespace Eigen {
 
 namespace grid_map_raycasting {
     Eigen::MatrixXb rayCastGridMap(Eigen::Vector3d vantage_point, Eigen::MatrixXd grid_map, Eigen::Vector2d grid_resolution){
-        const std::vector<double> height_vec(grid_map.data(), grid_map.data() + grid_map.rows() * grid_map.cols());
-
-        double xSize = grid_map.rows() * grid_resolution[0];
-        double ySize = grid_map.cols() * grid_resolution[1];
-        double centerX = 0;
-        double centerY = 0;
-
-        raisim::World world;
-        world.addHeightMap(grid_map.rows(), grid_map.cols(), xSize, ySize, centerX, centerY, height_vec);
-
         Eigen::MatrixXb occlusion_mask(grid_map.rows(), grid_map.cols());
         occlusion_mask.setConstant(false);
 
@@ -96,13 +85,6 @@ PYBIND11_MODULE(grid_map_raycasting, m) {
         .. autosummary::
            :toctree: _generate
     )pbdoc";
-
-    m.def("setRaisimLicenseFile", &raisim::World::setActivationKey, R"pbdoc(
-        Set the raisim license file path.
-
-        Args:
-            path: Path to the license file.
-    )pbdoc",  py::arg("licenseFile"));
 
     m.def("rayCastGridMap", &grid_map_raycasting::rayCastGridMap, R"pbdoc(
         Raycast every cell on the grid from a constant origin of the ray.

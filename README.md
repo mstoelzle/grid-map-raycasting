@@ -29,12 +29,6 @@ or on Ubuntu with:
 sudo apt install cmake python-pybind11 libeigen3-dev
 ```
 
-Next, please install raisimLib: https://raisim.com/sections/Installation.html
-After following the installation instructions, the build directory needs to be added to the CMAKE_PREFIX_PATH:
-```bash
-export CMAKE_PREFIX_PATH=$CMAKE_PREFIX_PATH:$LOCAL_INSTALL
-```
-
 Subsequently, we can install the Python module using pip:
 ```bash
 pip install --user .
@@ -52,14 +46,6 @@ from matplotlib import pyplot as plt
 import numpy as np
 from pathlib import Path
 import os
-
-# Path to raisim install (e.g. $LOCAL_INSTALL) as saved in the environment variable $RAISIM_INSTALL
-# run this in your terminal: export RAISIM_INSTALL=$LOCAL_INSTALL
-raisim_install_path = Path(os.getenv("RAISIM_INSTALL"))
-
-# We need to set the path to the raisim license file
-# It is usually placed in the rsc folder of the raisim installation
-m.setRaisimLicenseFile(str(raisim_install_path / "rsc" / "activation.raisim"))
 
 # Vantage point (e.g. robot position) is at x=0, y=0, z=1
 vantage_point = np.array([0., 0., 1.], dtype=np.double)

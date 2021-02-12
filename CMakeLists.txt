@@ -4,7 +4,6 @@ project(grid_map_raycasting)
 # Find packages **************************************************************************************************
 find_package(Eigen3 REQUIRED)
 find_package(pybind11 REQUIRED)
-find_package(raisim CONFIG REQUIRED)
 
 # Include **************************************************************************************************
 include_directories(${EIGEN3_INCLUDE_DIRS} )
@@ -12,7 +11,6 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 include_directories(${pybind11_INCLUDE_DIR})
 
 pybind11_add_module(grid_map_raycasting src/main.cpp)
-target_link_libraries(grid_map_raycasting PUBLIC raisim::raisim)
 if(NOT WIN32)
     target_link_libraries(grid_map_raycasting PUBLIC pthread)
 endif()
