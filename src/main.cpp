@@ -20,8 +20,8 @@ namespace grid_map_raycasting {
 
         for (int i = 0; i < grid_map.rows(); i++) {
             for (int j = 0; j < grid_map.cols(); j++) {
-                double grid_cell_x = (-grid_map.rows()/2 + i + 0.4) * grid_resolution(0);
-                double grid_cell_y = (-grid_map.cols()/2 + j + 0.4) * grid_resolution(1);
+                double grid_cell_x = (-grid_map.rows()/2 + i + 0.5) * grid_resolution(0);
+                double grid_cell_y = (-grid_map.cols()/2 + j + 0.5) * grid_resolution(1);
                 double grid_cell_z = grid_map(i, j);
 
                 if (std::isnan(grid_cell_z)){
@@ -39,12 +39,10 @@ namespace grid_map_raycasting {
                 Eigen::Vector3d raycast_pos = vantage_point;
                 bool grid_cell_occluded = false;
                 while (grid_cell_occluded == false) {
-                    raycast_pos += direction * std::min(grid_resolution(0), grid_resolution(1));
+                    raycast_pos += 0.5 * direction * std::min(grid_resolution(0), grid_resolution(1));
 
                     int raycast_u = (int)std::round(grid_map.rows() / 2 + raycast_pos(0) / grid_resolution(0));
                     int raycast_v = (int)std::round(grid_map.cols() / 2 + raycast_pos(1) / grid_resolution(1));
-                    // int raycast_u = (int)(grid_map.rows() / 2 + raycast_pos(0) / grid_resolution(0));
-                    // int raycast_v = (int)(grid_map.cols() / 2 + raycast_pos(1) / grid_resolution(1));
 
                     // the grid_cell cannot occlude itself, thats why we do not consider the final cell
                     if ((i == raycast_u && j == raycast_v)) {
