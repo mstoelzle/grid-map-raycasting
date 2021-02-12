@@ -15,6 +15,10 @@ namespace Eigen {
 
 namespace grid_map_raycasting {
     Eigen::MatrixXb rayCastGridMap(Eigen::Vector3d vantage_point, Eigen::MatrixXd grid_map, Eigen::Vector2d grid_resolution){
+        // the vantage point needs to lie within grid
+        assert(- grid_map.rows() / 2 <= vantage_point(0) / grid_resolution(0) <= grid_map.rows() / 2);
+        assert(- grid_map.cols() / 2 <= vantage_point(1) / grid_resolution(1) <= grid_map.cols() / 2);
+
         Eigen::MatrixXb occlusion_mask(grid_map.rows(), grid_map.cols());
         occlusion_mask.setConstant(false);
 
@@ -36,22 +40,25 @@ namespace grid_map_raycasting {
                 double ray_length = direction.norm();
                 direction /= ray_length;
 
+                std::cout << "norm of direction: " << direction.norm() << std::endl;
+                std::cout << "min of grid_resolution: " << std::min(grid_resolution(0), grid_resolution(1)) << std::endl;
+
                 Eigen::Vector3d raycast_pos = vantage_point;
                 bool grid_cell_occluded = false;
                 while (grid_cell_occluded == false) {
-                    raycast_pos += 0.5 * direction * std::min(grid_resolution(0), grid_resolution(1));
+                    raycast_pos += 0.1 * direction * std::min(grid_resolution(0), grid_resolution(1));
 
                     int raycast_u = (int)std::round(grid_map.rows() / 2 + raycast_pos(0) / grid_resolution(0));
                     int raycast_v = (int)std::round(grid_map.cols() / 2 + raycast_pos(1) / grid_resolution(1));
 
                     // the grid_cell cannot occlude itself, thats why we do not consider the final cell
                     if ((i == raycast_u && j == raycast_v)) {
-                        // std::cout << "break because we reached grid_cell for i=" << i << ", j=" << j << std::endl;
+                        std::cout << "break because we reached grid_cell for i=" << i << ", j=" << j << std::endl;
                         break;
                     }
 
                     if ((raycast_pos - vantage_point).norm() > ray_length) {
-                        // std::cout << "break because we are past max_distance for i=" << i << ", j=" << j << std::endl;
+                        std::cout << "break because we are past max_distance for i=" << i << ", j=" << j << std::endl;
                         break;
                     }
 
