@@ -3,8 +3,6 @@ import grid_map_raycasting as m
 import faulthandler; faulthandler.enable()
 from matplotlib import pyplot as plt
 import numpy as np
-from pathlib import Path
-import os
 
 # Vantage point (e.g. robot position) is at x=0, y=0, z=1
 vantage_point = np.array([0., 0., 1.], dtype=np.double)
