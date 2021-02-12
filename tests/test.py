@@ -27,7 +27,7 @@ occlusion_mask = m.rayCastGridMap(vantage_point, grid_map, grid_resolution)
 
 # The occlusion mask we expect to receive as the output of the ray-casting
 target_occlusion_mask = np.full((64, 64), False)
-target_occlusion_mask[0:30, 0:10] = True
+target_occlusion_mask[0:29, 0:9] = True
 
 fig, axes = plt.subplots(nrows=1, ncols=2)
 axes[0].set_title("Grid map")

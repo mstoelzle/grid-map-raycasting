@@ -31,19 +31,54 @@ namespace grid_map_raycasting {
 
         for (int i = 0; i < grid_map.rows(); i++) {
             for (int j = 0; j < grid_map.cols(); j++) {
-                double grid_cell_x = (-grid_map.rows()/2 + i) * grid_resolution(0);
-                double grid_cell_y = (-grid_map.cols()/2 + j) * grid_resolution(1);
+                double grid_cell_x = (-grid_map.rows()/2 + i + 0.4) * grid_resolution(0);
+                double grid_cell_y = (-grid_map.cols()/2 + j + 0.4) * grid_resolution(1);
                 double grid_cell_z = grid_map(i, j);
-                Eigen::Vector3d grid_cell_position = {grid_cell_x, grid_cell_y, grid_cell_z};
 
-                Eigen::Vector3d direction = grid_cell_position - vantage_point;
+                if (std::isnan(grid_cell_z)){
+                    // we skip already occluded cells to improve computational efficiency
+                    occlusion_mask(i, j) = true;
+                    continue;
+                }
+
+                Eigen::Vector3d grid_cell_pos = {grid_cell_x, grid_cell_y, grid_cell_z};
+
+                Eigen::Vector3d direction = grid_cell_pos - vantage_point;
                 double ray_length = direction.norm();
                 direction /= ray_length;
 
-                auto& col = world.rayTest(vantage_point, direction, 0.9999*ray_length, true);
-                if(col.size() > 0) {
-                    occlusion_mask(i, j) = true;
+                Eigen::Vector3d raycast_pos = vantage_point;
+                bool grid_cell_occluded = false;
+                while (grid_cell_occluded == false) {
+                    raycast_pos += direction * std::min(grid_resolution(0), grid_resolution(1));
+
+                    int raycast_u = (int)std::round(grid_map.rows() / 2 + raycast_pos(0) / grid_resolution(0));
+                    int raycast_v = (int)std::round(grid_map.cols() / 2 + raycast_pos(1) / grid_resolution(1));
+                    // int raycast_u = (int)(grid_map.rows() / 2 + raycast_pos(0) / grid_resolution(0));
+                    // int raycast_v = (int)(grid_map.cols() / 2 + raycast_pos(1) / grid_resolution(1));
+
+                    // the grid_cell cannot occlude itself, thats why we do not consider the final cell
+                    if ((i == raycast_u && j == raycast_v)) {
+                        // std::cout << "break because we reached grid_cell for i=" << i << ", j=" << j << std::endl;
+                        break;
+                    }
+
+                    if ((raycast_pos - vantage_point).norm() > ray_length) {
+                        // std::cout << "break because we are past max_distance for i=" << i << ", j=" << j << std::endl;
+                        break;
+                    }
+
+                    double ground_elevation = grid_map(raycast_u, raycast_v);
+                    // we do not consider cells with missing elevation information to cause occlusion
+                    if (!std::isnan(ground_elevation)){
+                        // we consider a cell to be occluded, if the ray hits a higher elevation on its trajectory to the cell
+                        if (ground_elevation > raycast_pos(2)){
+                            grid_cell_occluded = true;
+                        }
+                    }
                 }
+
+                occlusion_mask(i, j) = grid_cell_occluded;
             }
         }
 
