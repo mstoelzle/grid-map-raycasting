@@ -24,8 +24,8 @@ namespace grid_map_raycasting {
 
         for (int i = 0; i < grid_map.rows(); i++) {
             for (int j = 0; j < grid_map.cols(); j++) {
-                double grid_cell_x = (-grid_map.rows()/2 + i + 0.5) * grid_resolution(0);
-                double grid_cell_y = (-grid_map.cols()/2 + j + 0.5) * grid_resolution(1);
+                double grid_cell_x = (-grid_map.rows()/2 + i) * grid_resolution(0);
+                double grid_cell_y = (-grid_map.cols()/2 + j) * grid_resolution(1);
                 double grid_cell_z = grid_map(i, j);
 
                 if (std::isnan(grid_cell_z)){
@@ -40,25 +40,22 @@ namespace grid_map_raycasting {
                 double ray_length = direction.norm();
                 direction /= ray_length;
 
-                std::cout << "norm of direction: " << direction.norm() << std::endl;
-                std::cout << "min of grid_resolution: " << std::min(grid_resolution(0), grid_resolution(1)) << std::endl;
-
                 Eigen::Vector3d raycast_pos = vantage_point;
                 bool grid_cell_occluded = false;
                 while (grid_cell_occluded == false) {
-                    raycast_pos += 0.1 * direction * std::min(grid_resolution(0), grid_resolution(1));
+                    raycast_pos += 0.5 * direction * std::min(grid_resolution(0), grid_resolution(1));
 
                     int raycast_u = (int)std::round(grid_map.rows() / 2 + raycast_pos(0) / grid_resolution(0));
                     int raycast_v = (int)std::round(grid_map.cols() / 2 + raycast_pos(1) / grid_resolution(1));
 
                     // the grid_cell cannot occlude itself, thats why we do not consider the final cell
                     if ((i == raycast_u && j == raycast_v)) {
-                        std::cout << "break because we reached grid_cell for i=" << i << ", j=" << j << std::endl;
+                        // std::cout << "break because we reached grid_cell for i=" << i << ", j=" << j << std::endl;
                         break;
                     }
 
                     if ((raycast_pos - vantage_point).norm() > ray_length) {
-                        std::cout << "break because we are past max_distance for i=" << i << ", j=" << j << std::endl;
+                        // std::cout << "break because we are past max_distance for i=" << i << ", j=" << j << std::endl;
                         break;
                     }
 
@@ -68,6 +65,7 @@ namespace grid_map_raycasting {
                         // we consider a cell to be occluded, if the ray hits a higher elevation on its trajectory to the cell
                         if (ground_elevation > raycast_pos(2)){
                             grid_cell_occluded = true;
+                            // std::cout << "break because we found occluded grid_cell for u=" << raycast_u << ", v=" << raycast_v << std::endl;
                         }
                     }
                 }
