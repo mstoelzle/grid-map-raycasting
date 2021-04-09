@@ -16,8 +16,12 @@ C++ component including Python bindings to raycast a gridmap from a viewpoint to
 * CMake >= 3.12 (3.8 was the first version to support VS 2015) or Pip 10+
 
 ## Installation
-Please install the following standard packages to use this repo:
-On macOS this can be done with:
+Please install the following C++ dependencies to use this repo:
+
+```bash
+conda install cmake pybind11 eigen
+```
+or alternatively on macOS with homebrew:
 ```bash
 brew install cmake pybind11 eigen
 ```
@@ -26,9 +30,9 @@ or on Ubuntu with:
 sudo apt install cmake python-pybind11 libeigen3-dev
 ```
 
-Subsequently, we can install the Python module using pip:
-```bash
-pip install --user .
+On Windows we need to additionally install Visual Studio C++ to build Python packages and subsequently install dlib via pip:
+```
+pip install dlib
 ```
 
 With the `setup.py` file included in this example, the `pip install` command will
