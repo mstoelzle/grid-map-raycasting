@@ -30,11 +30,6 @@ or on Ubuntu with:
 sudo apt install cmake python-pybind11 libeigen3-dev
 ```
 
-On Windows we need to additionally install Visual Studio C++ to build Python packages and subsequently install dlib via pip:
-```
-pip install dlib
-```
-
 With the `setup.py` file included in this example, the `pip install` command will
 invoke CMake and build the pybind11 module as specified in `CMakeLists.txt`.
 
